@@ -1,0 +1,38 @@
+/* EmployeeList.css */
+.container {
+    padding: 20px;
+}
+
+h1 {
+    margin-bottom: 20px;
+}
+
+a {
+    display: inline;
+    text-decoration: none;
+    color: blue;
+}
+.react-datepicker__header{
+width:300px!important;
+}
+.search-bar {
+    border-radius: 4px;
+    border: 1px solid black;
+}
+.employees-list{
+    margin:20px 0px;
+    border-radius: 5px;
+}
+.home_button{
+    padding: 10px 20px;
+    background-color: #3d5b1b;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+.home_button:hover{
+    background-color: #6ba32c;
+}

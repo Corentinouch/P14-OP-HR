@@ -1,0 +1,54 @@
+/* App.css */
+
+.App-header {
+  background-color: #3d5b1b;
+  padding: 20px;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.container {
+  padding: 20px;
+  background: #e7e7e7;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+label {
+  margin-top: 10px;
+}
+
+input, select, button {
+  margin-top: 5px;
+  padding: 8px;
+  font-size: 16px;
+}
+
+fieldset.address {
+  margin-top: 20px;
+}
+.address_group{
+  margin:10px
+}
+.form_footer{
+  display: flex;
+  justify-content: space-evenly;
+}
+button {
+  margin-top: 20px;
+  padding: 10px;
+  font-size: 16px;
+  cursor: pointer;
+}
+.nav_header a{
+  padding: 10px;
+  margin:10px;
+  border:1px white solid;
+  color: white;
+  text-decoration: none;
+}
