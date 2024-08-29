@@ -61,6 +61,7 @@
     cursor: pointer;
     font-size: 16px;
     transition: background-color 0.3s ease;
+    top: 13px;
 }
 
 .form-container button:hover {
@@ -95,4 +96,14 @@
 
 .modal-content button:hover {
     background-color: #6ba32c;
+}
+
+.input-field.error {
+    border: 1px solid red !important;
+}
+
+.error-message {
+    color: red;
+    font-size: 0.9em;
+    margin-top: 5px;
 }

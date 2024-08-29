@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { addEmployee } from './employeeSlice';
 import CustomModal from "./CustomModal";
@@ -78,12 +77,34 @@ const CreateEmployee = () => {
     const [city, setCity] = useState('');
     const [state, setState] = useState('');
     const [zipCode, setZipCode] = useState('');
-    const [department, setDepartment] = useState('Sales');
+    const [department, setDepartment] = useState('');
     const [modalIsOpen, setModalIsOpen] = useState(false);
+    const [errors, setErrors] = useState({});
 
     const dispatch = useDispatch();
 
+    const validateForm = () => {
+        const newErrors = {};
+        if (!firstName) newErrors.firstName = "First Name is required";
+        if (!lastName) newErrors.lastName = "Last Name is required";
+        if (!dateOfBirth) newErrors.dateOfBirth = "Date of Birth is required";
+        if (!startDate) newErrors.startDate = "Start Date is required";
+        if (!street) newErrors.street = "Street is required";
+        if (!city) newErrors.city = "City is required";
+        if (!state) newErrors.state = "State is required";
+        if (!zipCode) newErrors.zipCode = "Zip Code is required";
+        if (!department) newErrors.department = "Department is required";
+
+        setErrors(newErrors);
+
+        return Object.keys(newErrors).length === 0;
+    };
+
     const saveEmployee = () => {
+        if (!validateForm()) {
+            return;
+        }
+
         const employee = {
             firstName,
             lastName,
@@ -96,11 +117,6 @@ const CreateEmployee = () => {
             department
         };
 
-        if (!firstName || !lastName || !dateOfBirth || !startDate || !street || !city || !state || !zipCode || !department) {
-            alert("Veuillez remplir tous les champs.");
-            return;
-        }
-
         dispatch(addEmployee(employee));
 
         setFirstName('');
@@ -111,7 +127,7 @@ const CreateEmployee = () => {
         setCity('');
         setState('');
         setZipCode('');
-        setDepartment('Sales');
+        setDepartment('');
 
         setModalIsOpen(true);
     };
@@ -120,72 +136,141 @@ const CreateEmployee = () => {
         <div className="form-container">
             <h2>Create Employee</h2>
             <form id="create-employee">
-                <label htmlFor="first-name">First Name</label>
-                <input type="text" id="first-name" className="input-field" value={firstName} onChange={e => setFirstName(e.target.value)} />
+                <div className="form-group">
+                    <label htmlFor="first-name">First Name</label>
+                    <input
+                        type="text"
+                        id="first-name"
+                        className={`input-field ${errors.firstName ? 'error' : ''}`}
+                        value={firstName}
+                        onChange={e => setFirstName(e.target.value)}
+                    />
+                    {errors.firstName && <span className="error-message">{errors.firstName}</span>}
+                </div>
 
-                <label htmlFor="last-name">Last Name</label>
-                <input type="text" id="last-name" className="input-field" value={lastName} onChange={e => setLastName(e.target.value)} />
+                <div className="form-group">
+                    <label htmlFor="last-name">Last Name</label>
+                    <input
+                        type="text"
+                        id="last-name"
+                        className={`input-field ${errors.lastName ? 'error' : ''}`}
+                        value={lastName}
+                        onChange={e => setLastName(e.target.value)}
+                    />
+                    {errors.lastName && <span className="error-message">{errors.lastName}</span>}
+                </div>
 
-                <label htmlFor="date-of-birth">Date of Birth</label>
-                <DatePicker
-                    selected={dateOfBirth}
-                    onChange={date => setDateOfBirth(date)}
-                    dateFormat="dd/MM/yyyy"
-                    showYearDropdown
-                    showMonthDropdown
-                    dropdownMode="select"
-                    className="input-field"
-                />
-                <label htmlFor="start-date">Start Date</label>
-                <DatePicker
-                    selected={startDate}
-                    onChange={date => setStartDate(date)}
-                    dateFormat="dd/MM/yyyy"
-                    showYearDropdown
-                    showMonthDropdown
-                    dropdownMode="select"
-                    className="input-field"
-                />
+                <div className="form-group">
+                    <label htmlFor="date-of-birth">
+                        Date of Birth
+                        <DatePicker
+                            selected={dateOfBirth}
+                            onChange={date => setDateOfBirth(date)}
+                            dateFormat="dd/MM/yyyy"
+                            showYearDropdown
+                            showMonthDropdown
+                            dropdownMode="select"
+                            className={`input-field ${errors.dateOfBirth ? 'error' : ''}`}
+                            id="date-of-birth"
+                        />
+                    </label>
+                    {errors.dateOfBirth && <span className="error-message">{errors.dateOfBirth}</span>}
+                </div>
+
+                <div className="form-group">
+                    <label htmlFor="start-date">
+                        Start Date
+                        <DatePicker
+                            selected={startDate}
+                            onChange={date => setStartDate(date)}
+                            dateFormat="dd/MM/yyyy"
+                            showYearDropdown
+                            showMonthDropdown
+                            dropdownMode="select"
+                            className={`input-field ${errors.startDate ? 'error' : ''}`}
+                            id="start-date"  // Ajout de l'id pour l'accessibilité
+                        />
+                    </label>
+                    {errors.startDate && <span className="error-message">{errors.startDate}</span>}
+                </div>
+
 
                 <fieldset className="address">
                     <legend>Address</legend>
                     <div className="address_group">
-                        <label htmlFor="street">Street</label>
-                        <input type="text" id="street" className="input-field" value={street}
-                               onChange={e => setStreet(e.target.value)}/>
-                    </div>
-                    <div className="address_group">
-                        <label htmlFor="city">City</label>
-                        <input type="text" id="city" className="input-field" value={city}
-                               onChange={e => setCity(e.target.value)}/>
-                    </div>
-                    <div className="address_group">
-                        <label htmlFor="state">State</label>
-                        <select id="state" className="input-field" value={state}
-                                onChange={e => setState(e.target.value)}>
-                            <option value="">Select State</option>
-                            {states.map((state) => (
-                                <option key={state.abbreviation} value={state.abbreviation}>
-                                    {state.name}
-                                </option>
-                            ))}
-                        </select>
-                    </div>
-                    <div className="address_group">
-                        <label htmlFor="zip-code">Zip Code</label>
-                        <input type="number" id="zip-code" className="input-field" value={zipCode}
-                               onChange={e => setZipCode(e.target.value)}/>
+                        <div className="form-group">
+                            <label htmlFor="street">Street</label>
+                            <input
+                                type="text"
+                                id="street"
+                                className={`input-field ${errors.street ? 'error' : ''}`}
+                                value={street}
+                                onChange={e => setStreet(e.target.value)}
+                            />
+                            {errors.street && <span className="error-message">{errors.street}</span>}
+                        </div>
+
+                        <div className="form-group">
+                            <label htmlFor="city">City</label>
+                            <input
+                                type="text"
+                                id="city"
+                                className={`input-field ${errors.city ? 'error' : ''}`}
+                                value={city}
+                                onChange={e => setCity(e.target.value)}
+                            />
+                            {errors.city && <span className="error-message">{errors.city}</span>}
+                        </div>
+
+                        <div className="form-group">
+                            <label htmlFor="state">State</label>
+                            <select
+                                id="state"
+                                className={`input-field ${errors.state ? 'error' : ''}`}
+                                value={state}
+                                onChange={e => setState(e.target.value)}
+                            >
+                                <option value="">Select State</option>
+                                {states.map((state) => (
+                                    <option key={state.abbreviation} value={state.abbreviation}>
+                                        {state.name}
+                                    </option>
+                                ))}
+                            </select>
+                            {errors.state && <span className="error-message">{errors.state}</span>}
+                        </div>
+
+                        <div className="form-group">
+                            <label htmlFor="zip-code">Zip Code</label>
+                            <input
+                                type="number"
+                                id="zip-code"
+                                className={`input-field ${errors.zipCode ? 'error' : ''}`}
+                                value={zipCode}
+                                onChange={e => setZipCode(e.target.value)}
+                            />
+                            {errors.zipCode && <span className="error-message">{errors.zipCode}</span>}
+                        </div>
                     </div>
                 </fieldset>
 
-                <label htmlFor="department">Department</label>
-                <select id="department" className="input-field" value={department} onChange={e => setDepartment(e.target.value)}>
-                    <option value="Sales">Sales</option>
-                    <option value="Marketing">Marketing</option>
-                    <option value="Engineering">Engineering</option>
-                    <option value="Human Resources">Human Resources</option>
-                    <option value="Legal">Legal</option>
-                </select>
+                <div className="form-group">
+                    <label htmlFor="department">Department</label>
+                    <select
+                        id="department"
+                        className={`input-field ${errors.department ? 'error' : ''}`}
+                        value={department}
+                        onChange={e => setDepartment(e.target.value)}
+                    >
+                        <option value="">Select Department</option>
+                        <option value="Sales">Sales</option>
+                        <option value="Marketing">Marketing</option>
+                        <option value="Engineering">Engineering</option>
+                        <option value="Human Resources">Human Resources</option>
+                        <option value="Legal">Legal</option>
+                    </select>
+                    {errors.department && <span className="error-message">{errors.department}</span>}
+                </div>
             </form>
             <div className="form_footer">
                 <button onClick={saveEmployee} className="btn-save">Save</button>
