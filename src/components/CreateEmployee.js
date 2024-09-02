@@ -3,7 +3,7 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { useDispatch } from 'react-redux';
 import { addEmployee } from './employeeSlice';
-import CustomModal from "./CustomModal";
+import { CustomModal } from 'custom-modal-library-corentin';
 import "./CreateEmployee.css"
 
 const states = [
@@ -188,7 +188,7 @@ const CreateEmployee = () => {
                             showMonthDropdown
                             dropdownMode="select"
                             className={`input-field ${errors.startDate ? 'error' : ''}`}
-                            id="start-date"  // Ajout de l'id pour l'accessibilité
+                            id="start-date"
                         />
                     </label>
                     {errors.startDate && <span className="error-message">{errors.startDate}</span>}
